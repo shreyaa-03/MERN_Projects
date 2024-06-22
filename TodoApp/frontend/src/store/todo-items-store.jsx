@@ -11,7 +11,8 @@ const addItemsReducer = (currValue, action) => {
   let newTodoItems = currValue;
   if (action.type === "ALL_ITEMS") {
     newTodoItems = action.payload.items;
-  }
+  } else if (action.type === "ADD")
+    newTodoItems = [action.payload, ...currValue];
   return newTodoItems;
 };
 
@@ -22,19 +23,29 @@ const TodoItemsContextProvider = ({ children }) => {
     dispatchTodoItems({
       type: "ALL_ITEMS",
       payload: {
-        items
+        items,
       },
     });
   };
 
-  const addItem = () => {};
+  const addItem = ({ todoName, todoDue }) => {
+    dispatchTodoItems({
+      action: "ADD",
+      payload: {
+        title: todoName,
+        data: todoDue,
+      },
+    });
+  };
 
   const deleteItem = () => {};
 
   return (
     <TodoItemsContext.Provider
       value={{ todoItems, addItem, allItems, deleteItem }}
-      >{ children}</TodoItemsContext.Provider>
+    >
+      {children}
+    </TodoItemsContext.Provider>
   );
 };
 
