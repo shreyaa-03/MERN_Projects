@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { createContext, useReducer } from "react";
 
 export const TodoItemsContext = createContext({
