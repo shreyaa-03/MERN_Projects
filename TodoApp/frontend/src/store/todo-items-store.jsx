@@ -12,7 +12,7 @@ const addItemsReducer = (currValue, action) => {
   if (action.type === "ALL_ITEMS") {
     newTodoItems = action.payload.items;
   } else if (action.type === "ADD")
-    newTodoItems = [action.payload, ...currValue];
+    newTodoItems = [action.payload.item, ...currValue];
   return newTodoItems;
 };
 
@@ -28,12 +28,11 @@ const TodoItemsContextProvider = ({ children }) => {
     });
   };
 
-  const addItem = ({ todoName, todoDue }) => {
+  const addItem = (item) => {
     dispatchTodoItems({
       action: "ADD",
       payload: {
-        title: todoName,
-        data: todoDue,
+        item,
       },
     });
   };
