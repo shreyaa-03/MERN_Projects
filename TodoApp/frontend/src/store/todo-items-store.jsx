@@ -13,6 +13,9 @@ const addItemsReducer = (currValue, action) => {
     newTodoItems = action.payload.items;
   } else if (action.type === "ADD")
     newTodoItems = [action.payload.item, ...currValue];
+  else if (action.type === "DELETE") {
+    newTodoItems = currValue.filter((item) => item._id !== action.payload.id);
+  }
   return newTodoItems;
 };
 
@@ -37,7 +40,14 @@ const TodoItemsContextProvider = ({ children }) => {
     });
   };
 
-  const deleteItem = () => {};
+  const deleteItem = (id) => {
+    dispatchTodoItems({
+      type: "DELETE",
+      payload: {
+        id,
+      },
+    });
+  };
 
   return (
     <TodoItemsContext.Provider
