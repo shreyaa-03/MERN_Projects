@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { createContext, useReducer } from "react";
+import { createContext, useCallback, useReducer } from "react";
 
 export const TodoItemsContext = createContext({
   todoItems: [],
@@ -23,14 +23,20 @@ const addItemsReducer = (currValue, action) => {
 const TodoItemsContextProvider = ({ children }) => {
   const [todoItems, dispatchTodoItems] = useReducer(addItemsReducer, []);
 
-  const allItems = (items) => {
-    dispatchTodoItems({
-      type: "ALL_ITEMS",
-      payload: {
-        items,
-      },
-    });
-  };
+  // every time parent changes, all its child methods ref change and each method is treaded as new object
+  // as a solution useCallBack -> only repaints the object based on dependency array
+  // you can directly pass allItems as a reference object instead of new obj 
+  const allItems = useCallback(
+    (items) => {
+      dispatchTodoItems({
+        type: "ALL_ITEMS",
+        payload: {
+          items,
+        },
+      });
+    },
+    [dispatchTodoItems]
+  );
 
   const addItem = (item) => {
     dispatchTodoItems({

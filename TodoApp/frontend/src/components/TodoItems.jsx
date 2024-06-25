@@ -7,7 +7,7 @@ import { TodoItemsContext } from "../store/todo-items-store";
 import Message from "./Message";
 
 export default function TodoItems() {
-  const { allItems, todoItems } = useContext(TodoItemsContext);
+  const { allItems, todoItems, addItem } = useContext(TodoItemsContext);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -34,7 +34,7 @@ export default function TodoItems() {
     return () => {
       controller.abort();
     };
-  }, []);
+  }, [allItems]);
 
   return (
     <>
