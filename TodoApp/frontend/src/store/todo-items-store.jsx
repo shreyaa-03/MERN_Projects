@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { createContext, useCallback, useReducer } from "react";
+import { createContext, useCallback, useReducer, useEffect } from "react";
 
 export const TodoItemsContext = createContext({
   todoItems: [],
@@ -25,7 +25,7 @@ const TodoItemsContextProvider = ({ children }) => {
 
   // every time parent changes, all its child methods ref change and each method is treaded as new object
   // as a solution useCallBack -> only repaints the object based on dependency array
-  // you can directly pass allItems as a reference object instead of new obj 
+  // you can directly pass allItems as a reference object instead of new obj
   const allItems = useCallback(
     (items) => {
       dispatchTodoItems({
@@ -55,6 +55,33 @@ const TodoItemsContextProvider = ({ children }) => {
       },
     });
   };
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/todo-items", {
+          signal,
+        });
+        if (!response.ok) {
+          throw new Error("Error Fetching Data");
+        }
+        const data = await response.json();
+        allItems(data.items);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+
+    //useEffect cleanUp
+    return () => {
+      controller.abort();
+    };
+  }, [addItem]);
 
   return (
     <TodoItemsContext.Provider

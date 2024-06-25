@@ -7,34 +7,34 @@ import { TodoItemsContext } from "../store/todo-items-store";
 import Message from "./Message";
 
 export default function TodoItems() {
-  const { allItems, todoItems, addItem } = useContext(TodoItemsContext);
+  const { todoItems } = useContext(TodoItemsContext);
 
-  useEffect(() => {
-    const controller = new AbortController();
-    const signal = controller.signal;
+  // useEffect(() => {
+  //   const controller = new AbortController();
+  //   const signal = controller.signal;
 
-    const fetchData = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/api/todo-items", {
-          signal,
-        });
-        if (!response.ok) {
-          throw new Error("Error Fetching Data");
-        }
-        const data = await response.json();
-        allItems(data.items);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch("http://localhost:3000/api/todo-items", {
+  //         signal,
+  //       });
+  //       if (!response.ok) {
+  //         throw new Error("Error Fetching Data");
+  //       }
+  //       const data = await response.json();
+  //       allItems(data.items);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
 
-    fetchData();
+  //   fetchData();
 
-    //useEffect cleanUp
-    return () => {
-      controller.abort();
-    };
-  }, [allItems]);
+  //   //useEffect cleanUp
+  //   return () => {
+  //     controller.abort();
+  //   };
+  // }, [allItems]);
 
   return (
     <>
