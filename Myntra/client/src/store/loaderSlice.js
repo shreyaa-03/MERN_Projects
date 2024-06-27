@@ -8,13 +8,13 @@ const loaderSlice = createSlice({
   },
   reducers: {
     fetchDone: (state) => {
-      return (state.fetchDone = true);
+      state.fetchDone = true;
     },
     fetchingStarted: (state) => {
-      return (state.currentlyFetching = true);
+      state.currentlyFetching = true;
     },
     fetchingFinished: (state) => {
-      return (state.currentlyFetching = false);
+      state.currentlyFetching = false;
     },
   },
 });

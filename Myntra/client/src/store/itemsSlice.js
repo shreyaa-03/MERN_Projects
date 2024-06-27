@@ -1,14 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { createSlice } from "@reduxjs/toolkit";
-import items from "../data/items";
 
 const itemSlice = createSlice({
   name: "items",
-  initialState: items,
+  initialState: [],
   reducers: {
-    addInitialItems: (store, action) => {
-      let newStore = store;
-      return newStore;
+    addInitialItems: (state,action) => {
+      return action.payload;
     },
   },
 });
