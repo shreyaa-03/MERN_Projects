@@ -1,5 +1,19 @@
+import { useDispatch, useSelector } from "react-redux";
+import { bagActions } from "../store/bagSlice";
+
 /* eslint-disable react/prop-types */
 export default function HomeItem({ item }) {
+  const bagItem = useSelector((store) => store.bag);
+  const dispatch = useDispatch();
+  const elementFound = bagItem.indexOf(item.id) >= 0;
+
+  const handleAddToBag = () => {
+    dispatch(bagActions.addToBag(item.id));
+  };
+  const handleRemove = () => {
+    dispatch(bagActions.removeFromBag(item.id));
+  };
+
   return (
     <>
       <div className="item-container">
@@ -14,7 +28,18 @@ export default function HomeItem({ item }) {
           <span className="original-price">Rs {item.original_price}</span>
           <span className="discount">({item.discount_percentage}% OFF)</span>
         </div>
-        <button className="btn-add-bag">Add to Bag</button>
+        {elementFound ? (
+          <button className="btn btn-add-bag btn-danger" onClick={handleRemove}>
+            Remove from Bag
+          </button>
+        ) : (
+          <button
+            className="btn btn-add-bag btn-success"
+            onClick={handleAddToBag}
+          >
+            Add to Bag
+          </button>
+        )}
       </div>
     </>
   );

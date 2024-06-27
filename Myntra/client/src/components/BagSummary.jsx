@@ -1,27 +1,36 @@
 /* eslint-disable react/prop-types */
 
+import { useSelector } from "react-redux";
+
 export default function BagSummary() {
-  const bagSummary = {
-    totalItem: 1,
-    totalMRP: 300,
-    totalDiscount: 30,
-    finalPayment: 280,
-  };
+  const bagItems = useSelector((store) => store.bag);
+  const items = useSelector((store) => store.items);
+  const filnalItems = items.filter((item) => bagItems.includes(item.id));
+  const CONVENIENCE_FEES = 99;
+
+  let totalItem = bagItems.length;
+  let totalMRP = 0;
+  let totalDiscount = 0;
+
+  filnalItems.forEach((bagItem) => {
+    totalMRP += bagItem.original_price;
+    totalDiscount += bagItem.original_price - bagItem.current_price;
+  });
+
+  let finalPayment = totalMRP - totalDiscount + CONVENIENCE_FEES;
 
   return (
     <div className="bag-summary">
       <div className="bag-details-container">
-        <div className="price-header">
-          PRICE DETAILS ({bagSummary.totalItem} Items){" "}
-        </div>
+        <div className="price-header">PRICE DETAILS ({totalItem} Items) </div>
         <div className="price-item">
           <span className="price-item-tag">Total MRP</span>
-          <span className="price-item-value">₹{bagSummary.totalMRP}</span>
+          <span className="price-item-value">₹{totalMRP}</span>
         </div>
         <div className="price-item">
           <span className="price-item-tag">Discount on MRP</span>
           <span className="price-item-value priceDetail-base-discount">
-            -₹{bagSummary.totalDiscount}
+            -₹{totalDiscount}
           </span>
         </div>
         <div className="price-item">
@@ -31,7 +40,7 @@ export default function BagSummary() {
         <hr />
         <div className="price-footer">
           <span className="price-item-tag">Total Amount</span>
-          <span className="price-item-value">₹{bagSummary.finalPayment}</span>
+          <span className="price-item-value">₹{finalPayment}</span>
         </div>
       </div>
       <button className="btn-place-order">

@@ -2,8 +2,12 @@ import { IoPerson } from "react-icons/io5";
 import { IoHeart } from "react-icons/io5";
 import { BsFillBagCheckFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function Header() {
+
+  const bagItems  = useSelector(store => store.bag)
+
   return (
     <>
       <header>
@@ -47,7 +51,7 @@ export default function Header() {
           <Link className="action_container" to='/bag'>
           <BsFillBagCheckFill />
             <span className="action_name" >Bag</span>
-            <span className="bag-item-count">0</span>
+            <span className="bag-item-count">{bagItems.length}</span>
           </Link>
         </div>
       </header>
