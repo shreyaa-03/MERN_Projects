@@ -36,10 +36,5 @@ export default function FetchingItems() {
     };
   }, [fetchStatus]);
 
-  return (
-    <div>
-      Fetch Status: {fetchStatus.fetchDone}
-      Currently Fetching : {fetchStatus.currentlyFetching}
-    </div>
-  );
+  return <></>;
 }
