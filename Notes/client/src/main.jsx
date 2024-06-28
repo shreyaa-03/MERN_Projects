@@ -8,7 +8,7 @@ import RegisterPage from "./components/UserAuth/Register/RegisterPage";
 
 
 const router = createBrowserRouter([
-  { path: '/', element: <App /> },
+  { path: '/', element: <App /> , children:[{path: '/', element: <App /> }]},
   { path: '/login', element: <LoginPage /> },
   {path:'/register', element: <RegisterPage/> }
 ])
