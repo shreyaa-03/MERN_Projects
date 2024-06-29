@@ -1,8 +1,7 @@
 import AuthButton from "../Shared/AuthButton";
 import AuthFooter from "../Shared/AuthFooter";
 import AuthEmailInput from "../Shared/AuthEmailInput";
-
-import AuthForgetPassInput from "../Shared/AuthForgetPassInput";
+import AuthPassInput from "../Shared/AuthPassInput";
 
 export default function LoginForm() {
   return (
@@ -10,7 +9,7 @@ export default function LoginForm() {
       <form className="space-y-6" action="#" method="POST">
         <AuthEmailInput />
 
-        <AuthForgetPassInput />
+        <AuthPassInput label={"Password"} forgotPass={true} />
 
         <AuthButton text={"Sign In"} />
       </form>

@@ -8,8 +8,8 @@ export default function RegisterForm() {
     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
       <form className="space-y-6" action="#" method="POST">
         <AuthEmailInput />
-        <AuthPassInput label={"Password"} />
-        <AuthPassInput label={"Confirm Password"} />
+        <AuthPassInput label={"Password"} forgotPass={false} />
+        <AuthPassInput label={"Confirm Password"} forgotPass={false} />
 
         <AuthButton text={"Create account"} />
       </form>
