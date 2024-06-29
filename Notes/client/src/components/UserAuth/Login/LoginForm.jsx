@@ -1,8 +1,7 @@
-import React from "react";
 import AuthButton from "../Shared/AuthButton";
 import AuthFooter from "../Shared/AuthFooter";
-import AuthForgetPassInput from "../Shared/PasswordInputs/AuthForgetPassInput";
 import AuthEmailInput from "../Shared/AuthEmailInput";
+import AuthPassInput from "../Shared/PasswordInputs/AuthPassInput";
 
 export default function LoginForm() {
   return (
@@ -10,7 +9,7 @@ export default function LoginForm() {
       <form className="space-y-6" action="#" method="POST">
         <AuthEmailInput />
 
-        <AuthForgetPassInput />
+        <AuthPassInput label={"Password"} />
 
         <AuthButton />
       </form>
