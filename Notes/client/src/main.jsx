@@ -7,11 +7,23 @@ import LoginPage from "./components/UserAuth/Login/LoginPage";
 import RegisterPage from "./components/UserAuth/Register/RegisterPage";
 import { Provider } from "react-redux";
 import store from "./store";
+import {
+  loginPageLoader,
+  registerPageLoader,
+} from "./components/routes/loaders";
 
 const router = createBrowserRouter([
   { path: "/", element: <App />, children: [{ path: "/", element: <App /> }] },
-  { path: "/login", element: <LoginPage /> },
-  { path: "/register", element: <RegisterPage /> },
+  {
+    path: "/login",
+    element: <LoginPage />,
+    loader: loginPageLoader,
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
+    loader: registerPageLoader,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

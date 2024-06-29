@@ -1,15 +1,14 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 export default function AuthFooter() {
-
-  let register = true
+  const currentPage = useSelector((state) => state.page.currentPage);
 
   return (
     <p className="mt-10 text-center text-sm text-gray-500">
-      {register ? (
+      {currentPage === "register" ? (
         <>
-          Already Signed Up?{' '}
+          Already Signed Up?{" "}
           <Link
             to="/login"
             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
@@ -19,7 +18,7 @@ export default function AuthFooter() {
         </>
       ) : (
         <>
-          Not Registered?{' '}
+          Not Registered?{" "}
           <Link
             to="/register"
             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
@@ -28,6 +27,6 @@ export default function AuthFooter() {
           </Link>
         </>
       )}
-  </p>
-  )
+    </p>
+  );
 }
