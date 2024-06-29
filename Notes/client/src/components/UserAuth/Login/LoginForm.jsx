@@ -1,7 +1,7 @@
 import AuthButton from "../Shared/AuthButton";
 import AuthFooter from "../Shared/AuthFooter";
 import AuthEmailInput from "../Shared/AuthEmailInput";
-import AuthPassInput from "../Shared/PasswordInputs/AuthPassInput";
+import AuthPassInput from "../Shared/AuthPassInput";
 
 export default function LoginForm() {
   return (

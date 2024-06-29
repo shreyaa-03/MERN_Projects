@@ -2,7 +2,7 @@
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { showPasswordActions } from "../../../../store/userAuthSlices/showPasswordSlice";
+import { showPasswordActions } from "../../../store/userAuthSlices/showPasswordSlice";
 
 export default function AuthPassInput({ label }) {
   const showPassword = useSelector(
