@@ -1,15 +1,14 @@
-/* eslint-disable react/prop-types */
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { showPasswordActions } from "../../../store/userAuthSlices/showPasswordSlice";
 
-export default function AuthPassInput({ label }) {
+export default function AuthForgetPassInput() {
   const showPassword = useSelector(
     (state) => state.showPasswordState.showPassword
   );
-
   const dispatch = useDispatch();
+
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -17,8 +16,17 @@ export default function AuthPassInput({ label }) {
           htmlFor="password"
           className="block text-sm font-medium leading-6 text-white"
         >
-          {label}
+          Password
         </label>
+
+        <div className="text-sm">
+          <a
+            href="#"
+            className="font-semibold text-indigo-600 hover:text-indigo-500"
+          >
+            Forgot password?
+          </a>
+        </div>
       </div>
       <div className="mt-2 relative">
         <input

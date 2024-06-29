@@ -1,13 +1,9 @@
-import { useSelector } from "react-redux";
+/* eslint-disable react/prop-types */
 
-export default function AuthHeader() {
-  const currentPage = useSelector((state) => state.page.currentPage);
-
+export default function AuthHeader({ header }) {
   return (
     <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
-      {currentPage === "register"
-        ? " Create new account"
-        : "Sign in to your account "}
+      {header}
     </h2>
   );
 }

@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 import AuthHeader from "./AuthHeader";
 
-export default function AuthLogo() {
+export default function AuthLogo({header}) {
   return (
     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
       <img
@@ -8,7 +9,7 @@ export default function AuthLogo() {
         src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
         alt="Your Company"
       />
-      <AuthHeader />
+      <AuthHeader header={header} />
     </div>
   );
 }

@@ -1,32 +1,16 @@
-import { useSelector } from "react-redux";
+/* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
 
-export default function AuthFooter() {
-  const currentPage = useSelector((state) => state.page.currentPage);
-
+export default function AuthFooter({ mainText, text, link }) {
   return (
     <p className="mt-10 text-center text-sm text-gray-500">
-      {currentPage === "register" ? (
-        <>
-          Already Signed Up?{" "}
-          <Link
-            to="/login"
-            className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-          >
-            SIGN IN
-          </Link>
-        </>
-      ) : (
-        <>
-          Not Registered?{" "}
-          <Link
-            to="/register"
-            className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-          >
-            REGISTER HERE
-          </Link>
-        </>
-      )}
+      {mainText}
+      <Link
+        to={link}
+        className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+      >
+        {text}
+      </Link>
     </p>
   );
 }

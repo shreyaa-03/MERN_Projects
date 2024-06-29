@@ -1,7 +1,8 @@
 import AuthButton from "../Shared/AuthButton";
 import AuthFooter from "../Shared/AuthFooter";
 import AuthEmailInput from "../Shared/AuthEmailInput";
-import AuthPassInput from "../Shared/AuthPassInput";
+
+import AuthForgetPassInput from "../Shared/AuthForgetPassInput";
 
 export default function LoginForm() {
   return (
@@ -9,12 +10,16 @@ export default function LoginForm() {
       <form className="space-y-6" action="#" method="POST">
         <AuthEmailInput />
 
-        <AuthPassInput label={"Password"} />
+        <AuthForgetPassInput />
 
-        <AuthButton />
+        <AuthButton text={"Sign In"} />
       </form>
 
-      <AuthFooter />
+      <AuthFooter
+        mainText={" Not Registered?"}
+        text={" REGISTER HERE"}
+        link={"/register"}
+      />
     </div>
   );
 }

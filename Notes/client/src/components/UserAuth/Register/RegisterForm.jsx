@@ -11,10 +11,14 @@ export default function RegisterForm() {
         <AuthPassInput label={"Password"} />
         <AuthPassInput label={"Confirm Password"} />
 
-        <AuthButton />
+        <AuthButton text={"Create account"} />
       </form>
 
-      <AuthFooter />
+      <AuthFooter
+        mainText={"Already Signed Up?"}
+        text={" SIGN IN"}
+        link={"/login"}
+      />
     </div>
   );
 }
