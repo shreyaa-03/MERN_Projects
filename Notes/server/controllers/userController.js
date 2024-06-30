@@ -3,8 +3,9 @@ const User = require("../models/userModel");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const randomString = require("randomstring");
 
-const sendVerifyEmail = asyncHandler(async (name, email, userId) => {
+const sendEmail = asyncHandler(async (to, subject, html) => {
   const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,
@@ -18,19 +19,26 @@ const sendVerifyEmail = asyncHandler(async (name, email, userId) => {
 
   const mailData = {
     from: process.env.HOST_EMAIL,
-    to: email,
-    subject: "Email Verification",
-    html:
-      "<p>Hii " +
-      name +
-      ', Please click here to <a href="http://localhost:3000/user/verify?id=' +
-      userId +
-      ' "> Verify </a> your mail. </p>',
+    to,
+    subject,
+    html,
   };
-  transporter.sendMail(mailData, (err, info) => {
-    if (err) console.log(err);
-    else console.log("Email has been sent", info.response);
-  });
+
+  await transporter.sendMail(mailData);
+});
+
+const sendVerifyEmail = asyncHandler(async (name, email, userId) => {
+  const html =
+    `<p>Hi ${name}, Please click here to ` +
+    `<a href="http://localhost:3000/user/verify?id=${userId}">Verify</a> your email.</p>`;
+  await sendEmail(email, "Email Verification", html);
+});
+
+const sendResetLink = asyncHandler(async (name, email, token) => {
+  const html =
+    `<p>Hi ${name}, Please click here to ` +
+    `<a href="http://localhost:3000/user/forget-pass?token=${token}">Reset</a> your password.</p>`;
+  await sendEmail(email, "Password Reset", html);
 });
 
 //GET -> /user/verify
@@ -54,30 +62,31 @@ const verifyEmail = asyncHandler(async (req, res) => {
 //GET -> /user/
 const getAllUsers = asyncHandler(async (req, res) => {
   const users = await User.find();
-  res.status(201).json({ users: users });
+  res.status(200).json({ users });
 });
 
 //POST -> /user/register
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
 
-  const userExists = await User.findOne({ email: email });
+  const userExists = await User.findOne({ email });
   if (userExists) {
     throw new Error("User already exists with this email id");
   }
   const hashedPassword = await bcrypt.hash(password, 10);
   const newUser = await User.create({
-    name: name,
-    email: email,
+    name,
+    email,
     password: hashedPassword,
   });
 
   if (newUser) {
-    sendVerifyEmail(name, email, newUser._id);
+    await sendVerifyEmail(name, email, newUser._id);
   } else {
     throw new Error("Email verification failed! ");
   }
-  res.status(201).json({ succes: "New user created", newUser });
+
+  res.status(201).json({ success: "New user created", newUser });
 });
 
 //POST -> /user/login
@@ -85,15 +94,14 @@ const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({ email });
     if (!user) {
       res.status(401);
       throw new Error("User not registered");
     }
 
     if (!user.isVerified) {
-      res.status(401).json({ message: "Email not verified" });
-      return;
+      return res.status(401).json({ message: "Email not verified" });
     }
 
     const matchPass = await bcrypt.compare(password, user.password);
@@ -120,52 +128,53 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
-const sendResetLink = asyncHandler(async (name, email, token) => {
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587, //gmail smtp uses 587 port for TLS/STARTTLS connections.
-    secure: false,
-    requireTLS: true, // ensure that the connection is encrypted.
-    auth: {
-      user: "shreyashedge490@gmail.com",
-      pass: "ufpo xicm buco fzkz",
-    },
-  });
-  const mailData = {
-    from: "shreyashedge490@gmail.com",
-    to: email,
-    subject: "For reset password",
-    html:
-      "<p>Hii " +
-      name +
-      ', Please click here to <a href="http://localhost:3000/user/forget-pass?token=' +
-      token +
-      ' "> to Reset </a> your password. </p>',
-  };
-  transporter.sendMail(mailData, (err) => {
-    if (err) console.log(err);
-    else console.log("email has been sent: ", info.response);
-  });
-});
-
 //POST -> /user/forget
 const verifyForget = asyncHandler(async (req, res) => {
-  const { email } = req.body
-  console.log(email)
-  const user = await User.findOne({ email: email })
-  if (user) {
-    if (user.isVerified === 0) {
-      res.render('forget', {message: 'Please verify your email'})
-    } else {
-    const token = randomString.generate()
-      const updated = await User.updateOne({ email: email }, { $set: { token: token } })
-      sendResetLink(user.name, user.email, token)
-      res.render('forget',{message: 'Check your email to reset password'})
-    }
-  } else {
-    res.render('forget',{message: 'User email is incorrect'})
+  const { email } = req.body;
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.status(400).json({ message: "User email is incorrect" });
   }
-})
 
+  if (!user.isVerified) {
+    return res.status(400).json({ message: "Please verify your email" });
+  }
 
-module.exports = { getAllUsers, registerUser, verifyEmail, loginUser, verifyForget };
+  const token = randomString.generate();
+
+  await User.updateOne({ email }, { $set: { token } });
+
+  await sendResetLink(user.name, user.email, token);
+
+  res.json({ message: "Check your email to reset password" });
+});
+
+//POST -> /user/set-forget-pass/:user_id
+const setForgetpass = asyncHandler(async (req, res) => {
+  const { password } = req.body;
+  const { user_id } = req.params;
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const updatedPassword = await User.findByIdAndUpdate(
+    user_id,
+    { $set: { password: hashedPassword, token: "" } },
+    { new: true }
+  );
+
+  if (!updatedPassword) {
+    throw new Error("Password not updated");
+  }
+
+  res.status(200).json({ success: "Password changed successfully!" });
+});
+
+module.exports = {
+  getAllUsers,
+  registerUser,
+  verifyEmail,
+  loginUser,
+  verifyForget,
+  setForgetpass,
+};
