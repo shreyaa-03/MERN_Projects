@@ -8,6 +8,7 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(logger('dev'))
+app.use('/user', require('./routes/userRoutes'))
 
 const port = process.env.PORT || 3001
 
