@@ -4,24 +4,31 @@ import AuthEmailInput from "../Shared/AuthEmailInput";
 import AuthPassInput from "../Shared/AuthPassInput";
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
+import { registerUser } from "../../../store/Slices/userDetailSlice";
 
 export default function RegisterForm() {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
+  const nameRef = useRef("");
   const emailRef = useRef("");
   const passwordRef = useRef("");
   const confirm_passRef = useRef("");
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
+    const name = nameRef.current.value;
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     const confirmPassword = confirm_passRef.current.value;
-    console.log(email, password, confirmPassword);
+    console.log(name, email, password, confirmPassword);
 
-    // if (password === confirmPassword) {
-    //   dispatch();
-    // }
+    if (password === confirmPassword) {
+      dispatch(registerUser({ name, email, password }));
+    }
+    nameRef.current.value = "";
+    emailRef.current.value = "";
+    passwordRef.current.value = "";
+    confirm_passRef.current.value = "";
   };
 
   return (
@@ -32,7 +39,8 @@ export default function RegisterForm() {
         method="POST"
         onSubmit={handleOnSubmit}
       >
-        <AuthEmailInput emailRef={emailRef} />
+        <AuthEmailInput emailRef={nameRef} label={"Full Name"} type={"text"} />
+        <AuthEmailInput emailRef={emailRef} label={"Email"} type={"email"} />
         <AuthPassInput
           label={"Password"}
           forgotPass={false}

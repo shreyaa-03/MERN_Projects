@@ -38,8 +38,7 @@ export default function AuthPassInput({ label, forgotPass, passRef }) {
       </div>
       <div className="mt-2 relative">
         <input
-          id="password"
-          name="password"
+          // name="password"
           type={textType}
           autoComplete="current-password"
           required

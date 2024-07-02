@@ -5,8 +5,10 @@ const connectDb = require("./config/dbConnection");
 connectDb();
 const errorHandler = require("./middleware/errorHandler");
 const initializeCronJobs = require("./jobs/cronJob");
+const cors = require("cors");
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger("dev"));

@@ -81,12 +81,32 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (newUser) {
-    await sendVerifyEmail(name, email, newUser._id);
+    try {
+      // Send the verification email
+      await sendVerifyEmail(name, email, newUser._id);
+      console.log("New user created, verification email sent", newUser);
+      res
+        .status(201)
+        .json({
+          message: "New user created, verification email sent",
+          newUser,
+        });
+    } catch (error) {
+      // If email sending fails, delete the newly created user
+      await User.findByIdAndDelete(newUser._id);
+      console.error(
+        "User created but email sending failed, user deleted:",
+        error
+      );
+      res
+        .status(500)
+        .json({
+          message: "User created but email sending failed, user deleted",
+        });
+    }
   } else {
-    throw new Error("Email verification failed! ");
+    res.status(500).json({ message: "User creation failed" });
   }
-
-  res.status(201).json({ success: "New user created", newUser });
 });
 
 //POST -> /user/login
