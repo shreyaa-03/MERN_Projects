@@ -4,6 +4,7 @@ const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const randomString = require("randomstring");
+const { options } = require("../routes/userRoutes");
 
 const sendEmail = asyncHandler(async (to, subject, html) => {
   const transporter = nodemailer.createTransport({
@@ -27,11 +28,17 @@ const sendEmail = asyncHandler(async (to, subject, html) => {
   await transporter.sendMail(mailData);
 });
 
-const sendVerifyEmail = asyncHandler(async (name, email, userId) => {
-  const html =
-    `<p>Hi ${name}, Please click here to ` +
-    `<a href="http://localhost:3000/user/verify?id=${userId}">Verify</a> your email.</p>`;
-  await sendEmail(email, "Email Verification", html);
+// const sendVerifyEmail = asyncHandler(async (name, email, userId) => {
+//   const html =
+//     `<p>Hi ${name}, Please click here to ` +
+//     `<a href="http://localhost:5173/email-verified?id=${userId}">Verify</a> your email.</p>`;
+//     // `<a href="http://localhost:3000/user/verify?id=${userId}">Verify</a> your email.</p>`;
+//   await sendEmail(email, "Email Verification", html);
+// });
+
+const sendOTPEmail = asyncHandler(async (name, email, otp) => {
+  const html = `<p>Hi ${name},</p><p>Your OTP code is: <strong>${otp}</strong></p>`;
+  await sendEmail(email, "Email Verification OTP", html);
 });
 
 const sendResetLink = asyncHandler(async (name, email, token) => {
@@ -42,18 +49,45 @@ const sendResetLink = asyncHandler(async (name, email, token) => {
 });
 
 //GET -> /user/verify
-const verifyEmail = asyncHandler(async (req, res) => {
-  const user = await User.findOne({ _id: req.query.id });
+// const verifyEmail = asyncHandler(async (req, res) => {
+//   const user = await User.findOne({ _id: req.query.id });
+
+//   if (!user) {
+//     return res.status(400).json({ error: "Invalid or expired link" });
+//   }
+
+//   if (user.isVerified) {
+//     return res.status(400).json({ error: "User already verified" });
+//   }
+
+//   user.isVerified = true;
+//   await user.save();
+
+//   res.status(200).json({ success: "Email verified successfully" });
+// });
+
+// GET -> /user/verify-otp
+const verifyOTP = asyncHandler(async (req, res) => {
+  const { email, otp } = req.body;
+
+  const user = await User.findOne({ email });
 
   if (!user) {
-    return res.status(400).json({ error: "Invalid or expired link" });
+    return res.status(400).json({ error: "Invalid email" });
   }
 
   if (user.isVerified) {
     return res.status(400).json({ error: "User already verified" });
   }
 
+  const matchOTP = await bcrypt.compare(user.otp, otp);
+
+  if (!matchOTP || user.otpExpires < Date.now()) {
+    return res.status(400).json({ error: "Invalid or expired OTP" });
+  }
   user.isVerified = true;
+  user.otp = undefined;
+  user.otpExpires = undefined;
   await user.save();
 
   res.status(200).json({ success: "Email verified successfully" });
@@ -74,23 +108,28 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("User already exists with this email id");
   }
   const hashedPassword = await bcrypt.hash(password, 10);
+
+  const otp = randomString.generate({ length: 6, charset: "numeric" });
+  const hashedOTP = await bcrypt.hash(otp, 10);
+
   const newUser = await User.create({
     name,
     email,
     password: hashedPassword,
+    otp: hashedOTP, // Store the OTP in the database
+    otpExpires: Date.now() + 3600000, // OTP expires in 1 hour
   });
 
   if (newUser) {
     try {
       // Send the verification email
-      await sendVerifyEmail(name, email, newUser._id);
+      // await sendVerifyEmail(name, email, newUser._id);
+      await sendOTPEmail(name, email, otp);
       console.log("New user created, verification email sent", newUser);
-      res
-        .status(201)
-        .json({
-          message: "New user created, verification email sent",
-          newUser,
-        });
+      res.status(201).json({
+        message: "New user created, verification email sent",
+        newUser,
+      });
     } catch (error) {
       // If email sending fails, delete the newly created user
       await User.findByIdAndDelete(newUser._id);
@@ -98,11 +137,9 @@ const registerUser = asyncHandler(async (req, res) => {
         "User created but email sending failed, user deleted:",
         error
       );
-      res
-        .status(500)
-        .json({
-          message: "User created but email sending failed, user deleted",
-        });
+      res.status(500).json({
+        message: "User created but email sending failed, user deleted",
+      });
     }
   } else {
     res.status(500).json({ message: "User creation failed" });
@@ -193,7 +230,8 @@ const setForgetpass = asyncHandler(async (req, res) => {
 module.exports = {
   getAllUsers,
   registerUser,
-  verifyEmail,
+  // verifyEmail,
+  verifyOTP,
   loginUser,
   verifyForget,
   setForgetpass,

@@ -7,6 +7,7 @@ import LoginPage from "./components/UserAuth/Login/LoginPage";
 import RegisterPage from "./components/UserAuth/Register/RegisterPage";
 import { Provider } from "react-redux";
 import store from "./store";
+import EmailVerify from "./components/UserAuth/EmailVerification/EmailVerify";
 
 const router = createBrowserRouter([
   { path: "/", element: <App />, children: [{ path: "/", element: <App /> }] },
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <RegisterPage />,
+  },
+  {
+    path: "/email-verified",
+    element: <EmailVerify />,
   },
 ]);
 
