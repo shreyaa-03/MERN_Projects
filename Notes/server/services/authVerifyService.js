@@ -39,7 +39,7 @@ const sendOTPEmail = asyncHandler(async (name, email, otp) => {
 const sendResetEmail = asyncHandler(async (name, email, token) => {
   const html =
     `<p>Hi ${name}, Please click here to ` +
-    `<a href="http://localhost:3000/user/forget-pass?token=${token}">Reset</a> your password.</p>`;
+    `<a href="http://localhost:3000/user/verify-forget-pass?token=${token}">Reset</a> your password.</p>`;
   await sendEmail(email, "Password Reset", html);
 });
 

@@ -1,6 +1,8 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../../models/userModel");
-const randomString = require("randomstring");
+// const randomString = require("randomstring");
+const crypto = require("crypto");
+const bcrypt = require("bcrypt");
 const { sendResetEmail } = require("../../services/authVerifyService");
 
 //POST -> /user/forget
@@ -17,13 +19,23 @@ const verifyForgetPassEmail = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Please verify your email" });
   }
 
-  const token = randomString.generate();
+  // const token = randomString.generate();
+  const token = crypto.randomBytes(32).toString("hex");
 
-  await User.updateOne({ email }, { $set: { token } });
+  const hashedToken = await bcrypt.hash(token, 10);
+
+  await User.updateOne(
+    { email },
+    { $set: { token: hashedToken, tokenExpires: Date.now() + 3600000 } }
+  );
 
   await sendResetEmail(user.name, user.email, token);
 
-  res.json({ message: "Check your email to reset password" });
+  res.json({
+    message: "Check your email to reset password",
+    token: token,
+    userId: user._id,
+  });
 });
 
 module.exports = verifyForgetPassEmail;

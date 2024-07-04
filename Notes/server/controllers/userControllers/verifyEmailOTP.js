@@ -16,7 +16,7 @@ const verifyOTP = asyncHandler(async (req, res) => {
     return res.status(400).json({ error: "User already verified" });
   }
 
-  const matchOTP = await bcrypt.compare(user.otp, otp);
+  const matchOTP = await bcrypt.compare(otp, user.otp);
 
   if (!matchOTP || user.otpExpires < Date.now()) {
     return res.status(400).json({ error: "Invalid or expired OTP" });
@@ -29,4 +29,4 @@ const verifyOTP = asyncHandler(async (req, res) => {
   res.status(200).json({ success: "Email verified successfully" });
 });
 
-module.exports = verifyOTP
+module.exports = verifyOTP;

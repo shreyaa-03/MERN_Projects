@@ -11,12 +11,12 @@ const {
 const router = express.Router();
 
 router.route("/").get(getAllUsers);
-router.route("/:id").get();
+// router.route("/:id").get();
 router.route("/login").post(loginUser);
 router.route("/register").post(registerUser);
 // router.route("/verify-email").get(verifyEmail);
 router.route("/verify-otp").post(verifyOTP);
-router.route("/forget").post(verifyForgetPassEmail);
-router.route("/set-forget-pass/:user_id").post(setForgetpassword);
+router.route("/verify-forget-pass").post(verifyForgetPassEmail);
+router.route("/set-forget-pass/:userId").post(setForgetpassword);
 
 module.exports = router;
