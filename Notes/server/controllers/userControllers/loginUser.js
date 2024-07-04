@@ -5,10 +5,16 @@ const jwt = require("jsonwebtoken");
 
 //POST -> /user/login
 const loginUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  const { email, phone, password } = req.body;
 
   try {
-    const user = await User.findOne({ email });
+    let user;
+    if (email) {
+      user = await User.findOne({ email });
+    } else if (phone) {
+      user = await User.findOne({ phoneNo: phone }); // Ensure this matches your field name
+    }
+
     if (!user) {
       res.status(401);
       throw new Error("User not registered");

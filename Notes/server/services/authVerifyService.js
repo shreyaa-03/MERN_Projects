@@ -46,12 +46,31 @@ const sendResetEmail = asyncHandler(async (name, email, token) => {
   await sendEmail(email, "Password Reset", html);
 });
 
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToekn = process.env.TWILIO_AUTH_TOKEN;
+const accountSid = "ACd42bc65ce7d647be94a69861d32a5d1a";
+const authToekn = "";
+// const accountSid = process.env.TWILIO_ACCOUNT_SID;
+// const authToekn = process.env.TWILIO_AUTH_TOKEN;
 const twilioPhone = process.env.TWILIO_PHONE_NO;
 
 const twilioClient = new twilio(accountSid, authToekn);
 
-const sentPhoneOTP = asyncHandler(async (req, res) => {});
+const sendPhoneOTP = asyncHandler(async (name, phoneNo, otp) => {
+  const sendOtp = await twilioClient.messages.create({
+    body: `Hi ${name}! Your otp is: ${otp}`,
+    to: phoneNo,
+    from: twilioPhone,
+  });
+  if (!sendOtp) {
+    console.error("Error sending OTP:");
+    throw new Error("Failed to send OTP");
+  }
+  console.log("OTP sent successfully");
+});
 
-module.exports = { sendEmail, sendVerifyEmail, sendOTPEmail, sendResetEmail };
+module.exports = {
+  sendEmail,
+  sendVerifyEmail,
+  sendOTPEmail,
+  sendResetEmail,
+  sendPhoneOTP,
+};

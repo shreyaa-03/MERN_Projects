@@ -1,9 +1,34 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../../models/userModel");
 const bcrypt = require("bcrypt");
+const { sendOTPEmail } = require("../../services/authVerifyService");
+
+const sendOtp_email = asyncHandler(async (name, email, otp) => {
+  try {
+    // Send the verification email
+    // await sendVerifyEmail(name, email, newUser._id);
+    await sendOTPEmail(name, email, otp);
+    console.log("New user created, verification email sent", newUser);
+    res.status(201).json({
+      message: "New user created, verification email sent",
+      newUser,
+    });
+  } catch (error) {
+    // If email sending fails, delete the newly created user
+    // await User.findByIdAndDelete(newUser._id);
+    // console.error(
+    //   "User created but email sending failed, user deleted:",
+    //   error
+    // );
+    res.status(500).json({
+      message: "User created but email sending failed, user deleted",
+      error,
+    });
+  }
+});
 
 // GET -> /user/verify-otp
-const verifyOTP = asyncHandler(async (req, res) => {
+const verifyEmailOTP = asyncHandler(async (req, res) => {
   const { email, otp } = req.body;
 
   const user = await User.findOne({ email });
@@ -29,4 +54,4 @@ const verifyOTP = asyncHandler(async (req, res) => {
   res.status(200).json({ success: "Email verified successfully" });
 });
 
-module.exports = verifyOTP;
+module.exports = { verifyEmailOTP, sendOtp_email };
