@@ -1,5 +1,8 @@
 const asyncHandler = require("express-async-handler");
 const nodemailer = require("nodemailer");
+const User = require("../models/userModel");
+const twilio = require("twilio");
+const otpGenerator = require("otp-generator");
 
 const sendEmail = asyncHandler(async (to, subject, html) => {
   const transporter = nodemailer.createTransport({
@@ -42,5 +45,13 @@ const sendResetEmail = asyncHandler(async (name, email, token) => {
     `<a href="http://localhost:3000/user/verify-forget-pass?token=${token}">Reset</a> your password.</p>`;
   await sendEmail(email, "Password Reset", html);
 });
+
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToekn = process.env.TWILIO_AUTH_TOKEN;
+const twilioPhone = process.env.TWILIO_PHONE_NO;
+
+const twilioClient = new twilio(accountSid, authToekn);
+
+const sentPhoneOTP = asyncHandler(async (req, res) => {});
 
 module.exports = { sendEmail, sendVerifyEmail, sendOTPEmail, sendResetEmail };
