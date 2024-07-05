@@ -46,10 +46,8 @@ const sendResetEmail = asyncHandler(async (name, email, token) => {
   await sendEmail(email, "Password Reset", html);
 });
 
-const accountSid = "ACd42bc65ce7d647be94a69861d32a5d1a";
-const authToekn = "";
-// const accountSid = process.env.TWILIO_ACCOUNT_SID;
-// const authToekn = process.env.TWILIO_AUTH_TOKEN;
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToekn = process.env.TWILIO_AUTH_TOKEN;
 const twilioPhone = process.env.TWILIO_PHONE_NO;
 
 const twilioClient = new twilio(accountSid, authToekn);
