@@ -7,7 +7,7 @@ const initializeCronJobs = require("./jobs/cronJob");
 const cors = require("cors");
 const session = require("./config/sessionConfig"); // Import the session configuration
 const passport = require("passport");
-require('./middleware/passportHandler'); // Initialize passport configuration
+require("./middleware/passportHandler"); // Initialize passport configuration
 
 connectDb(); // Connect to the database
 
