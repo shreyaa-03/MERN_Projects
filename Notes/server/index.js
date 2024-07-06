@@ -5,7 +5,8 @@ const connectDb = require("./config/dbConnection");
 const errorHandler = require("./middleware/errorHandler");
 const initializeCronJobs = require("./jobs/cronJob");
 const cors = require("cors");
-const session = require("./config/sessionConfig"); // Import the session configuration
+const cookieSession = require('cookie-session')
+// const session = require("./config/sessionConfig"); 
 const passport = require("passport");
 require("./middleware/passportHandler"); // Initialize passport configuration
 
@@ -19,7 +20,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(logger("dev"));
 
 // Session setup
-app.use(session);
+// app.use(session);
+app.use(
+  cookieSession({
+    name: "session",
+    keys: ["somesessionkey"],
+    maxAge: 24 * 60 * 60 * 100,
+  })
+);
+
 
 // Passport initialization
 app.use(passport.initialize());
