@@ -20,12 +20,28 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+export const loginUser = createAsyncThunk(
+  "loginUser",
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/user/login",
+        userData
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 const userDetailSlice = createSlice({
   name: "users",
   initialState: {
     users: [],
     loading: false,
     error: null,
+    loginStatus: 'idle'
   },
   extraReducers: (builder) => {
     builder
@@ -40,6 +56,19 @@ const userDetailSlice = createSlice({
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Access custom error payload here
+      })
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userInfo = action.payload; // Store logged-in user info
+        state.loginStatus = 'succeeded'
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });

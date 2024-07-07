@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-export default function AuthInput({ emailRef, label, type }) {
+export default function AuthInput({ inputRef, label, type }) {
   return (
     <div>
       <label
@@ -12,7 +12,7 @@ export default function AuthInput({ emailRef, label, type }) {
         <input
           type={type}
           required
-          ref={emailRef}
+          ref={inputRef}
           className="block w-full rounded-md border-0 py-1.5 text-slate-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
         />
       </div>

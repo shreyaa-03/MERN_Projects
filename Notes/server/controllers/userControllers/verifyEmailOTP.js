@@ -9,10 +9,6 @@ const sendOtp_email = asyncHandler(async (name, email, otp) => {
     // await sendVerifyEmail(name, email, newUser._id);
     await sendOTPEmail(name, email, otp);
     console.log("New user created, verification email sent", newUser);
-    res.status(201).json({
-      message: "New user created, verification email sent",
-      newUser,
-    });
   } catch (error) {
     // If email sending fails, delete the newly created user
     // await User.findByIdAndDelete(newUser._id);

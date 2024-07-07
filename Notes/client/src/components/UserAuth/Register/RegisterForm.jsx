@@ -39,8 +39,8 @@ export default function RegisterForm() {
         method="POST"
         onSubmit={handleOnSubmit}
       >
-        <AuthInput emailRef={nameRef} label={"Full Name"} type={"text"} />
-        <AuthInput emailRef={emailRef} label={"Email"} type={"email"} />
+        <AuthInput inputRef={nameRef} label={"Full Name"} type={"text"} />
+        <AuthInput inputRef={emailRef} label={"Email"} type={"email"} />
         <AuthPassInput
           label={"Password"}
           forgotPass={false}
