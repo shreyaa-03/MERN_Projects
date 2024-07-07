@@ -1,6 +1,6 @@
 import AuthButton from "../Shared/AuthButton";
 import AuthFooter from "../Shared/AuthFooter";
-import AuthEmailInput from "../Shared/AuthEmailInput";
+import AuthInput from "../Shared/AuthInput";
 import AuthPassInput from "../Shared/AuthPassInput";
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
@@ -39,8 +39,8 @@ export default function RegisterForm() {
         method="POST"
         onSubmit={handleOnSubmit}
       >
-        <AuthEmailInput emailRef={nameRef} label={"Full Name"} type={"text"} />
-        <AuthEmailInput emailRef={emailRef} label={"Email"} type={"email"} />
+        <AuthInput emailRef={nameRef} label={"Full Name"} type={"text"} />
+        <AuthInput emailRef={emailRef} label={"Email"} type={"email"} />
         <AuthPassInput
           label={"Password"}
           forgotPass={false}
