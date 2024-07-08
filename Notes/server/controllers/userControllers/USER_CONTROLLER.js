@@ -5,6 +5,7 @@ const loginUser = require("./loginUser");
 const verifyForgetPassEmail = require("./verifyForgetPassEmail");
 const setForgetpassword = require("./setForgetPassword");
 const { verifyPhoneOTP } = require("./verifyPhoneOTP");
+const verifyEmail = require('./verifyEmail')
 
 module.exports = {
   getAllUsers,
@@ -14,4 +15,5 @@ module.exports = {
   verifyForgetPassEmail,
   setForgetpassword,
   verifyPhoneOTP,
+  verifyEmail
 };

@@ -29,7 +29,7 @@ const verifyForgetPassEmail = asyncHandler(async (req, res) => {
     { $set: { token: hashedToken, tokenExpires: Date.now() + 3600000 } }
   );
 
-  await sendResetEmail(user.email, token);
+  await sendResetEmail(user.email, user.id, token);
 
   res.json({
     message: "Check your email to reset password",

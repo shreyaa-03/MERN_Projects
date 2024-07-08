@@ -5,6 +5,7 @@ const randomString = require("randomstring");
 const { sendOtp_email } = require("./verifyEmailOTP");
 const { sendOtp_phone } = require("./verifyPhoneOTP");
 const otpGenerator = require("otp-generator");
+const { sendVerifyEmail } = require("../../services/authVerifyService");
 
 //POST -> /user/register
 const registerUser = asyncHandler(async (req, res) => {
@@ -20,7 +21,7 @@ const registerUser = asyncHandler(async (req, res) => {
   // }
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const otp = randomString.generate({ length: 6, charset: "numeric" }); // EMAIL-OTP
+  // const otp = randomString.generate({ length: 6, charset: "numeric" }); // EMAIL-OTP
 
   // const otp = otpGenerator.generate(4, {
   //   upperCaseAlphabets: false,
@@ -28,7 +29,7 @@ const registerUser = asyncHandler(async (req, res) => {
   //   lowerCaseAlphabets: false,
   // }); //PHONE -OTP
 
-  const hashedOTP = await bcrypt.hash(otp, 10);
+  // const hashedOTP = await bcrypt.hash(otp, 10);
 
   const newUser = await User.create({
     name,
@@ -40,8 +41,9 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (newUser) {
-    sendOtp_email(name,email,otp)
+    // sendOtp_email(name,email,otp)
     // sendOtp_phone(name, phoneNo, otp, hashedOTP);
+    await sendVerifyEmail(name, email, newUser.id);
     res.status(200).json({ success: "Otp sent successfully!" });
   } else {
     res.status(500).json({ message: "User creation failed" });

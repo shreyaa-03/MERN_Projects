@@ -19,9 +19,9 @@ export default function RequestResetForm() {
       await axios.post("http://localhost:3000/user/reset/password/request", {
         email,
       });
-        setAlert({ type: "success" });
-        emailRef.current.value = ""
-        setIsDisabled(true); 
+      setAlert({ type: "success" });
+      emailRef.current.value = "";
+      setIsDisabled(true);
     } catch (errro) {
       setAlert({ type: "failure" });
     }
@@ -31,7 +31,12 @@ export default function RequestResetForm() {
     <>
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form className="space-y-6" onSubmit={handleOnSubmit}>
-                  <AuthInput label={"Email"} type={"email"} inputRef={emailRef} disabled={ isDisabled} />
+          <AuthInput
+            label={"Email"}
+            type={"email"}
+            inputRef={emailRef}
+            disabled={isDisabled}
+          />
           <AuthButton text={"Next"} />
         </form>
         <div className="mt-10">
@@ -44,7 +49,7 @@ export default function RequestResetForm() {
           ) : alert.type == "failure" ? (
             <FailureAlert
               label2={
-                "Error sending reset link to your email. Check your email or try again later"
+                "Error sending reset link to your email. Check your email id or try again later"
               }
             />
           ) : null}
