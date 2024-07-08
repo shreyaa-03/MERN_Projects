@@ -2,6 +2,7 @@
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function AuthPassInput({ label, forgotPass, passRef }) {
   const [textType, setTextType] = useState("password");
@@ -27,12 +28,12 @@ export default function AuthPassInput({ label, forgotPass, passRef }) {
 
         {forgotPass ? (
           <div className="text-sm">
-            <a
-              href="#"
+            <Link
+              to='/request/reset/password'
               className="font-semibold text-indigo-600 hover:text-indigo-500"
             >
               Forgot password?
-            </a>
+            </Link>
           </div>
         ) : null}
       </div>

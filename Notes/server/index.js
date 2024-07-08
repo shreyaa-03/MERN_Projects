@@ -5,8 +5,7 @@ const connectDb = require("./config/dbConnection");
 const errorHandler = require("./middleware/errorHandler");
 const initializeCronJobs = require("./jobs/cronJob");
 const cors = require("cors");
-const cookieSession = require("cookie-session");
-// const session = require("./config/sessionConfig");
+const session = require("./config/sessionConfig");
 const passport = require("passport");
 const passportHandler = require("./middleware/passportHandler");
 

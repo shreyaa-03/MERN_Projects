@@ -9,6 +9,8 @@ import { Provider } from "react-redux";
 import store from "./store";
 import EmailVerify from "./components/UserAuth/EmailVerification/EmailVerify";
 import Home from "./components/Home";
+import RequestResetPage from "./components/UserAuth/ForgetPassword/RequestResetPage";
+import ResetPassword from "./components/UserAuth/ForgetPassword/ResetPassword";
 
 const router = createBrowserRouter([
   { path: "/", element: <App />, children: [{ path: "/", element: <App /> }] },
@@ -26,8 +28,16 @@ const router = createBrowserRouter([
   },
   {
     path: "/home",
-    element: <Home/>
-  }
+    element: <Home />,
+  },
+  {
+    path: "/request/reset/password",
+    element: <RequestResetPage />,
+  },
+  {
+    path: "/reset/password",
+    element: <ResetPassword />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
