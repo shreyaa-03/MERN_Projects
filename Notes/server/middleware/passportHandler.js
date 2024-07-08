@@ -1,51 +1,25 @@
-// // middleware/passportHandler.js
-// const passport = require("passport");
-// const GoogleStrategy = require("passport-google-oauth20").Strategy;
-
-// passport.use(
-//   new GoogleStrategy(
-//     {
-//       clientID: process.env.GOOGLE_CLIENT_ID,
-//       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-//       callbackURL: "/auth/google/callback",
-//       scope: ["profile", "email"],
-//     },
-//     (accessToken, refreshToken, profile, done) => {
-//       console.log("Profile Data", profile);
-//       return done(null, profile);
-//     }
-//   )
-// );
-
-// passport.serializeUser((user, done) => {
-//   done(null, user);
-// });
-
-// passport.deserializeUser((obj, done) => {
-//   done(null, obj);
-// });
-
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const passport = require("passport");
-
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:3001/auth/google/callback",
-      scope: ["profile", "email"],
-    },
-    function (accessToken, refreshToken, profile, callback) {
-      callback(null, profile);
-    }
-  )
-);
+const GoogleStrategy = require("passport-google-oauth2").Strategy;
 
 passport.serializeUser((user, done) => {
   done(null, user);
 });
-
-passport.deserializeUser((user, done) => {
+passport.deserializeUser(function (user, done) {
   done(null, user);
 });
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID:
+        "123029380661-s6evfrgbt1m42dehgt0ua761cj2prtst.apps.googleusercontent.com", // Your Credentials here.
+      clientSecret: "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", // Your Credentials here.
+      callbackURL: "http://localhost:3000/auth/google/callback",
+      scope: ["email", "profile"],
+      passReqToCallback: true,
+    },
+    function (request, accessToken, refreshToken, profile, done) {
+      return done(null, profile);
+    }
+  )
+);

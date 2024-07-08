@@ -8,29 +8,19 @@ const cors = require("cors");
 const cookieSession = require("cookie-session");
 // const session = require("./config/sessionConfig");
 const passport = require("passport");
-require("./middleware/passportHandler"); // Initialize passport configuration
+const passportHandler = require("./middleware/passportHandler");
 
-connectDb(); // Connect to the database
+connectDb();
 
 const app = express();
 
-// app.use(cors());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger("dev"));
 
-// Session setup
-// app.use(session);
-app.use(
-  cookieSession({
-    name: "session",
-    keys: ["somesessionkey"],
-    maxAge: 24 * 60 * 60 * 100,
-  })
-);
+app.use(session);
 
-// Passport initialization
 app.use(passport.initialize());
 app.use(passport.session());
 
