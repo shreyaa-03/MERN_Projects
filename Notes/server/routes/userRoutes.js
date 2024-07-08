@@ -18,7 +18,7 @@ router.route("/register").post(registerUser);
 // router.route("/verify-email").get(verifyEmail);
 router.route("/verify-otp").post(verifyEmailOTP);
 router.route("/verify-phone-otp").post(verifyPhoneOTP);
-router.route("/verify-forget-pass").post(verifyForgetPassEmail);
-router.route("/set-forget-pass/:userId").post(setForgetpassword);
+router.route("/reset/password/request").post(verifyForgetPassEmail);
+router.route("/reset/password").post(setForgetpassword);
 
 module.exports = router;

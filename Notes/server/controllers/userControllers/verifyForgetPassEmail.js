@@ -5,7 +5,7 @@ const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const { sendResetEmail } = require("../../services/authVerifyService");
 
-//POST -> /user/forget
+//POST -> /reset/password/request
 const verifyForgetPassEmail = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
@@ -29,7 +29,7 @@ const verifyForgetPassEmail = asyncHandler(async (req, res) => {
     { $set: { token: hashedToken, tokenExpires: Date.now() + 3600000 } }
   );
 
-  await sendResetEmail(user.name, user.email, token);
+  await sendResetEmail(user.email, token);
 
   res.json({
     message: "Check your email to reset password",

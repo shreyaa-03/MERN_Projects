@@ -2,19 +2,19 @@ const asyncHandler = require("express-async-handler");
 const User = require("../../models/userModel");
 const bcrypt = require("bcrypt");
 
-// POST -> /user/set-forget-pass/:userId
+// POST -> /user/reset/password
 const setForgetPassword = asyncHandler(async (req, res) => {
-  const { password, token } = req.body;
-  const { userId } = req.params;
+  const { password } = req.body;
+  const { token, id } = req.query;
 
-  // Find user by userId
-  const user = await User.findById(userId);
+  // Find user by id
+  const user = await User.findById(id);
 
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   }
 
-  const matchToken = await bcrypt.compare(token, user.token)
+  const matchToken = await bcrypt.compare(token, user.token);
 
   // Verify that the token matches and is not expired
   if (!matchToken || user.tokenExpires <= Date.now()) {
