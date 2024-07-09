@@ -25,7 +25,6 @@ app.use(passport.session());
 
 // Routes
 app.use("/user", require("./routes/userRoutes"));
-app.use("/auth", require("./routes/googleAuthRoutes"));
 
 // Error handling middleware
 app.use(errorHandler);

@@ -2,25 +2,27 @@ const asyncHandler = require("express-async-handler");
 const User = require("../../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { sendVerifyEmail } = require("../../services/authVerifyService");
 
 //POST -> /user/login
 const loginUser = asyncHandler(async (req, res) => {
   const { email, phone, password } = req.body;
 
   try {
-    let user;
-    if (email) {
-      user = await User.findOne({ email });
-    } else if (phone) {
-      user = await User.findOne({ phoneNo: phone }); // Ensure this matches your field name
-    }
+    const user = await User.findOne({ email });
+
+    // user = await User.findOne({ phoneNo: phone }); // Ensure this matches your field name
 
     if (!user) {
       res.status(401).json({ message: "Please register yourself first." });
     }
 
     if (!user.isVerified) {
-      return res.status(401).json({ message: "Please verify your email." });
+      await sendVerifyEmail(user.name, user.email, user._id);
+      return res.status(401).json({
+        message:
+          "Please verify your email. A verification link has been resent to your email.",
+      });
     }
 
     const matchPass = await bcrypt.compare(password, user.password);

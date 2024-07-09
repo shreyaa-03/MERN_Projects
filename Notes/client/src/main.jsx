@@ -10,6 +10,7 @@ import EmailVerify from "./components/UserAuth/EmailVerification/EmailVerify";
 import Home from "./components/Home";
 import RequestResetPage from "./components/UserAuth/ForgetPassword/RequestResetPage";
 import ResetPassword from "./components/UserAuth/ForgetPassword/ResetPassPage";
+import EmailOTPVerify from "./components/UserAuth/EmailOTPVerification/EmailOTPVerify";
 
 const router = createBrowserRouter([
   { path: "/", element: <App />, children: [{ path: "/", element: <App /> }] },
@@ -22,7 +23,7 @@ const router = createBrowserRouter([
     element: <RegisterPage />,
   },
   {
-    path: "/email-verified",
+    path: "/email/verified",
     element: <EmailVerify />,
   },
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: "/reset/password",
     element: <ResetPassword />,
+  },
+  {
+    path: "/verify/email/otp",
+    element: <EmailOTPVerify/>
   },
 ]);
 

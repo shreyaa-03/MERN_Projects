@@ -5,8 +5,6 @@ const { sendOTPEmail } = require("../../services/authVerifyService");
 
 const sendOtp_email = asyncHandler(async (name, email, otp) => {
   try {
-    // Send the verification email
-    // await sendVerifyEmail(name, email, newUser._id);
     await sendOTPEmail(name, email, otp);
     console.log("New user created, verification email sent", newUser);
   } catch (error) {
