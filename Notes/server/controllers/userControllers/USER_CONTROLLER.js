@@ -1,11 +1,13 @@
 const getAllUsers = require("./getAllUsers");
 const registerUser = require("./registerUser");
-const { verifyEmailOTP } = require("./verifyEmailOTP");
+
 const loginUser = require("./loginUser");
-const verifyForgetPassEmail = require("./verifyForgetPassEmail");
-const setForgetpassword = require("./setForgetPassword");
-const { verifyPhoneOTP } = require("./verifyPhoneOTP");
-const verifyEmail = require('./verifyEmail')
+
+const { verifyEmailOTP } = require("./emailOTPVerification/verifyEmailOTP");
+const verifyForgetPassEmail = require("./resetForgotPassword/verifyForgetPassEmail");
+const setForgetPassword = require("./resetForgotPassword/setForgetPassword");
+const { verifyPhoneOTP } = require("./phoneOTPVerification/verifyPhoneOTP");
+const verifyEmail = require("./emailLinkVerfication/verifyEmail");
 
 module.exports = {
   getAllUsers,
@@ -13,7 +15,7 @@ module.exports = {
   verifyEmailOTP,
   loginUser,
   verifyForgetPassEmail,
-  setForgetpassword,
+  setForgetPassword,
   verifyPhoneOTP,
-  verifyEmail
+  verifyEmail,
 };

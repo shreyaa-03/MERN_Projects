@@ -5,9 +5,9 @@ const {
   verifyEmail,
   loginUser,
   verifyForgetPassEmail,
-  setForgetpassword,
   verifyEmailOTP,
   verifyPhoneOTP,
+  setForgetPassword,
 } = require("../controllers/userControllers/USER_CONTROLLER");
 const router = express.Router();
 
@@ -19,6 +19,6 @@ router.route("/verify/email").get(verifyEmail);
 router.route("/verify/email/otp").post(verifyEmailOTP);
 router.route("/verify-phone-otp").post(verifyPhoneOTP);
 router.route("/reset/password/request").post(verifyForgetPassEmail);
-router.route("/reset/password").post(setForgetpassword);
+router.route("/reset/password").post(setForgetPassword);
 
 module.exports = router;

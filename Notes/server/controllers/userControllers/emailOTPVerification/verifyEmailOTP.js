@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
-const User = require("../../models/userModel");
+const User = require("../../../models/userModel");
 const bcrypt = require("bcrypt");
-const { sendOTPEmail } = require("../../services/authVerifyService");
+const { sendOTPEmail } = require("../../../services/authVerifyService");
 
 const sendOtp_email = asyncHandler(async (name, email, otp) => {
   try {

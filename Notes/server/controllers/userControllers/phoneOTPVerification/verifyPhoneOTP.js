@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler");
-const User = require("../../models/userModel");
-const { sendPhoneOTP } = require("../../services/authVerifyService");
+const User = require("../../../models/userModel");
+const { sendPhoneOTP } = require("../../../services/authVerifyService");
 const bcrypt = require("bcrypt");
 
 const sendOtp_phone = asyncHandler(async (name, phoneNo, otp, hashedOTP) => {

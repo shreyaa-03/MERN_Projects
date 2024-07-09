@@ -1,9 +1,9 @@
 const asyncHandler = require("express-async-handler");
-const User = require("../../models/userModel");
+const User = require("../../../models/userModel");
 // const randomString = require("randomstring");
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
-const { sendResetEmail } = require("../../services/authVerifyService");
+const { sendResetEmail } = require("../../../services/authVerifyService");
 
 //POST -> /reset/password/request
 const verifyForgetPassEmail = asyncHandler(async (req, res) => {
