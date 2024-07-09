@@ -15,7 +15,7 @@ export const registerUser = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(error.response.data.message || "Registration failed");
     }
   }
 );
@@ -30,7 +30,7 @@ export const loginUser = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -41,13 +41,13 @@ const userDetailSlice = createSlice({
     users: [],
     loading: false,
     error: null,
-    loginStatus: 'idle'
+    loginStatus: 'idle',
   },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
-        state.error = null; // Reset error state when a new request starts
+        state.error = null; 
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loading = false;
@@ -55,7 +55,7 @@ const userDetailSlice = createSlice({
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload; // Access custom error payload here
+        state.error = action.payload; 
       })
       .addCase(loginUser.pending, (state) => {
         state.loading = true;

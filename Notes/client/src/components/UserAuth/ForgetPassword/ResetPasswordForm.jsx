@@ -9,12 +9,13 @@ import { useLocation } from "react-router-dom";
 export default function ResetPasswordForm() {
   const passRef = useRef("");
   const confirmPassRef = useRef("");
+
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const token = queryParams.get("token");
   const id = queryParams.get("id");
-  const [isDisabled, setIsDisabled] = useState(false);
 
+  const [isDisabled, setIsDisabled] = useState(false);
   const [alert, setAlert] = useState("");
 
   const handleOnSubmit = async (e) => {

@@ -30,7 +30,7 @@ const sendVerifyEmail = asyncHandler(async (name, email, userId) => {
   const html =
     `<p>Hi ${name}, Please click here to ` +
     `<a href="http://localhost:5173/email-verified?id=${userId}">Verify</a> your email.</p>`;
-  // `<a href="http://localhost:3000/user/verify?id=${userId}">Verify</a> your email.</p>`;
+  // `<a href="http://localhost:3000/user/verify-email?id=${userId}">Verify</a> your email.</p>`;
   await sendEmail(email, "Email Verification", html);
 });
 
