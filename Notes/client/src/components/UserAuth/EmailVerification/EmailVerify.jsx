@@ -16,7 +16,7 @@ export default function EmailVerify() {
     const verifyEmail = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/user/verify-email?id=${userId}`
+          `http://localhost:3000/user/verify/email?id=${userId}`
         );
         if (response.data.success) {
           if (isMounted) {

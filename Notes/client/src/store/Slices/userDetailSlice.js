@@ -1,8 +1,4 @@
-import {
-  createAsyncThunk,
-  createSlice,
-  // rejectWithValue,
-} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const registerUser = createAsyncThunk(
@@ -15,7 +11,9 @@ export const registerUser = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data.message || "Registration failed");
+      return rejectWithValue(
+        error.response.data.message || "Registration failed"
+      );
     }
   }
 );
@@ -30,7 +28,7 @@ export const loginUser = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data.message || "Login Failed");
     }
   }
 );
@@ -41,13 +39,13 @@ const userDetailSlice = createSlice({
     users: [],
     loading: false,
     error: null,
-    loginStatus: 'idle',
+    loginStatus: "idle",
   },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
-        state.error = null; 
+        state.error = null;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loading = false;
@@ -55,7 +53,7 @@ const userDetailSlice = createSlice({
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload; 
+        state.error = action.payload;
       })
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
@@ -64,7 +62,7 @@ const userDetailSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.userInfo = action.payload; // Store logged-in user info
-        state.loginStatus = 'succeeded'
+        state.loginStatus = "succeeded";
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;

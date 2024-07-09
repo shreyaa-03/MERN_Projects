@@ -16,18 +16,17 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     if (!user) {
-      res.status(401);
-      throw new Error("User not registered");
+      res.status(401).json({ message: "Please register yourself first." });
     }
 
     if (!user.isVerified) {
-      return res.status(401).json({ message: "Email not verified" });
+      return res.status(401).json({ message: "Please verify your email." });
     }
 
     const matchPass = await bcrypt.compare(password, user.password);
     if (!matchPass) {
-      res.status(401);
-      throw new Error("Login credentials are incorrect");
+      res.status(401).json({ message: "Login credentials are incorrect" });
+      // throw new Error("Login credentials are incorrect");
     }
 
     const accessToken = jwt.sign(

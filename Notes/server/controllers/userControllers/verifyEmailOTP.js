@@ -10,20 +10,11 @@ const sendOtp_email = asyncHandler(async (name, email, otp) => {
     await sendOTPEmail(name, email, otp);
     console.log("New user created, verification email sent", newUser);
   } catch (error) {
-    // If email sending fails, delete the newly created user
-    // await User.findByIdAndDelete(newUser._id);
-    // console.error(
-    //   "User created but email sending failed, user deleted:",
-    //   error
-    // );
-    res.status(500).json({
-      message: "User created but email sending failed, user deleted",
-      error,
-    });
+    console.log(error);
   }
 });
 
-// GET -> /user/verify-otp
+// GET -> /user/verify/email/otp
 const verifyEmailOTP = asyncHandler(async (req, res) => {
   const { email, otp } = req.body;
 
