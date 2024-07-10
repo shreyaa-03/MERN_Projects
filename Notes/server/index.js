@@ -6,8 +6,6 @@ const errorHandler = require("./middleware/errorHandler");
 const initializeCronJobs = require("./jobs/cronJob");
 const cors = require("cors");
 const session = require("./config/sessionConfig");
-const passport = require("passport");
-const passportHandler = require("./middleware/passportHandler");
 
 connectDb();
 
@@ -19,9 +17,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(logger("dev"));
 
 app.use(session);
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Routes
 app.use("/user", require("./routes/userRoutes"));
