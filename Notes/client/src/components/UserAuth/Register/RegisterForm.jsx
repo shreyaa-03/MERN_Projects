@@ -98,6 +98,7 @@ import { useDispatch } from "react-redux";
 import { registerUser } from "../../../store/Slices/userDetailSlice";
 import FailureAlert from "../Shared/FailureAlert";
 import SuccessAlert from "../Shared/SuccessAlert";
+import { resendVerification } from "../../../store/Slices/resendVerificationSlice";
 
 export default function RegisterForm() {
   const dispatch = useDispatch();
@@ -137,6 +138,25 @@ export default function RegisterForm() {
     }
   };
 
+  const handleResend = async (email) => {
+    try {
+      await dispatch(
+        resendVerification({
+          url: "http://localhost:3000/user/resend/verification/link",
+          userData: { email },
+        })
+      ).unwrap();
+      setAlert({ type: "success", email });
+    } catch (error) {
+      console.error("Error:", error);
+      setAlert({
+        type: "failure",
+        message: "Failed to resend verification link. Please try again.",
+      });
+    }
+  };
+  
+
   return (
     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
       <form
@@ -169,6 +189,10 @@ export default function RegisterForm() {
           <SuccessAlert
             label1={"Registration successful"}
             label2={"Please check your email to verify"}
+            resendOption={{
+              text: "Resend verification link",
+              onClick: () => handleResend(alert.email),
+            }}
           />
         ) : alert.type === "failure" ? (
           <FailureAlert

@@ -1,4 +1,6 @@
 const asyncHandler = require("express-async-handler");
+const User = require("../../../models/userModel");
+const { sendVerifyEmail } = require("../../../services/authVerifyService");
 
 // POST -> /user/resend/verification/link
 const resendEmailVerificationLink = asyncHandler(async (req, res) => {
@@ -16,6 +18,7 @@ const resendEmailVerificationLink = asyncHandler(async (req, res) => {
     }
 
     await sendVerifyEmail(user.name, user.email, user._id);
+
     res.status(200).json({ success: "Verification email resent successfully" });
   } catch (error) {
     console.error(error);

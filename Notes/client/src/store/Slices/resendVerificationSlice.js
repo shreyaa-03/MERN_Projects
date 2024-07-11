@@ -3,12 +3,12 @@ import axios from "axios";
 
 export const resendVerification = createAsyncThunk(
   "user/resendVerification",
-  async ({ url, userData }, { rejectWIthValue }) => {
+  async ({ url, userData }, { rejectWithValue }) => {
     try {
-      const response = axios.post(url, userData);
+      const response = await axios.post(url, userData);
       return response.data;
     } catch (error) {
-      return rejectWIthValue(error.response.data.message);
+      return rejectWithValue(error.response.data.message);
     }
   }
 );
