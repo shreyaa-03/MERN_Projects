@@ -109,6 +109,7 @@ export default function RegisterForm() {
   const confirm_passRef = useRef(null);
 
   const [alert, setAlert] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -122,6 +123,7 @@ export default function RegisterForm() {
       try {
         await dispatch(registerUser({ name, email, password })).unwrap();
         setAlert({ type: "success" });
+        setEmail(email);
         nameRef.current.value = "";
         emailRef.current.value = "";
         passwordRef.current.value = "";
@@ -138,7 +140,7 @@ export default function RegisterForm() {
     }
   };
 
-  const handleResend = async (email) => {
+  const handleResend = async () => {
     try {
       await dispatch(
         resendVerification({
@@ -155,7 +157,6 @@ export default function RegisterForm() {
       });
     }
   };
-  
 
   return (
     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
