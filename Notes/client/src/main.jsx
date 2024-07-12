@@ -11,6 +11,7 @@ import Home from "./components/Home";
 import RequestResetPage from "./components/UserAuth/ForgetPassword/RequestResetPage";
 import ResetPassword from "./components/UserAuth/ForgetPassword/ResetPassPage";
 import EmailOTPVerify from "./components/UserAuth/EmailOTPVerification/EmailOTPVerify";
+import PhoneOTPVerify from "./components/UserAuth/PhoneOTPVerification/PhoneOTPVerify";
 
 const router = createBrowserRouter([
   { path: "/", element: <App />, children: [{ path: "/", element: <App /> }] },
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
     path: "/verify/email/otp",
     element: <EmailOTPVerify/>
   },
+  {
+    path: '/verify/phone/otp',
+    element: <PhoneOTPVerify/>
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

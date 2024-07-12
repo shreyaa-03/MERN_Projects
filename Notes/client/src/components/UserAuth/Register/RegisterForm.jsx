@@ -87,7 +87,7 @@
 //   );
 // }
 
-// // ********* REGISTER BY EMAIL VERIFICATION LINK *********
+// ********* REGISTER BY EMAIL VERIFICATION LINK *********
 
 import AuthButton from "../Shared/AuthButton";
 import AuthFooter from "../Shared/AuthFooter";
