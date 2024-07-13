@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-/* eslint-disable react/prop-types */
+// /* eslint-disable react/prop-types */
 export default function OTPVerification({label1,label2}) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
