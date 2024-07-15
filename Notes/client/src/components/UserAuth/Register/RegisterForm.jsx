@@ -1,5 +1,4 @@
 // ********* REGISTER BY EMAIL VERIFICATION OTP *********
-
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +19,6 @@ export default function RegisterForm() {
   const confirm_passRef = useRef(null);
 
   const [alert, setAlert] = useState("");
-  const [email, setEmail] = useState("");
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -32,16 +30,17 @@ export default function RegisterForm() {
     if (password === confirmPassword) {
       setAlert("");
       try {
-        await dispatch(registerUser({ name, email, password })).unwrap();
-        setAlert({ type: "success" });
-        setEmail(email);
-        nameRef.current.value = "";
-        emailRef.current.value = "";
-        passwordRef.current.value = "";
-        confirm_passRef.current.value = "";
+        const response = await dispatch(registerUser({ name, email, password })).unwrap();
 
-        // Navigate to OTP page with email
-        navigate('/verify/email/otp', { state: { email } });
+        if (response.success) {
+          setAlert({ type: "success" });
+          navigate('/verify/email/otp', { state: { email } });
+        } else {
+          setAlert({
+            type: "failure",
+            message: response.message || "Please check your information and try again.",
+          });
+        }
       } catch (error) {
         console.error("Error:", error);
         setAlert({
@@ -53,24 +52,6 @@ export default function RegisterForm() {
       setAlert({ type: "failure", message: "Passwords do not match" });
     }
   };
-
-  // const handleResend = async () => {
-  //   try {
-  //     await dispatch(
-  //       resendVerification({
-  //         url: "http://localhost:3000/user/resend/verification/link",
-  //         userData: { email },
-  //       })
-  //     ).unwrap();
-  //     setAlert({ type: "success", email });
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     setAlert({
-  //       type: "failure",
-  //       message: "Failed to resend verification link. Please try again.",
-  //     });
-  //   }
-  // };
 
   return (
     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -103,7 +84,7 @@ export default function RegisterForm() {
         {alert.type === "failure" ? (
           <FailureAlert
             label1={"Registration Failed!"}
-            label2={alert.message}
+            label2={alert.message || (alert.message == 'User already exists with this email id' )}
           />
         ) : null}
       </div>

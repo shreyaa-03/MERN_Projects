@@ -6,7 +6,7 @@ const { sendOTPEmail } = require("../../../services/authVerifyService");
 const sendOtp_email = asyncHandler(async (name, email, otp) => {
   try {
     await sendOTPEmail(name, email, otp);
-    console.log("New user created, verification email sent", newUser);
+    console.log("New user created, verification email sent");
   } catch (error) {
     console.log(error);
   }
@@ -19,24 +19,26 @@ const verifyEmailOTP = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    return res.status(400).json({ error: "Invalid email" });
+    return res.status(400).json({ message: "Invalid email" });
   }
 
   if (user.isVerified) {
-    return res.status(400).json({ error: "User already verified" });
+    return res.status(400).json({ message: "User already verified" });
   }
 
   const matchOTP = await bcrypt.compare(otp, user.otp);
 
   if (!matchOTP || user.otpExpires < Date.now()) {
-    return res.status(400).json({ error: "Invalid or expired OTP" });
+    return res.status(400).json({ message: "Invalid or expired OTP" });
   }
   user.isVerified = true;
   user.otp = undefined;
   user.otpExpires = undefined;
   await user.save();
 
-  res.status(200).json({ success: "Email verified successfully" });
+  res
+    .status(200)
+    .json({ success: true, message: "Email verified successfully" });
 });
 
 module.exports = { verifyEmailOTP, sendOtp_email };
