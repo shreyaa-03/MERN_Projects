@@ -33,7 +33,7 @@ export default function RegisterForm() {
         const response = await dispatch(registerUser({ name, email, password })).unwrap();
 
         if (response.success) {
-          setAlert({ type: "success" });
+          setAlert({ type: "success", message : response.message });
           navigate('/verify/email/otp', { state: { email } });
         } else {
           setAlert({

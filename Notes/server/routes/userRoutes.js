@@ -12,6 +12,7 @@ const {
 const {
   resendEmailVerificationLink,
 } = require("../controllers/userControllers/emailLinkVerfication/resendEmailVerificationLink");
+const { resendEmailOTP } = require("../controllers/userControllers/emailOTPVerification/resendEmailOTP");
 const router = express.Router();
 
 router.route("/").get(getAllUsers);
@@ -23,6 +24,7 @@ router.route("/verify/email").get(verifyEmail);
 router.route("/resend/verification/link").post(resendEmailVerificationLink);
 
 router.route("/verify/email/otp").post(verifyEmailOTP);
+router.route("/resend/email/otp").post(resendEmailOTP)
 
 router.route("/verify-phone-otp").post(verifyPhoneOTP);
 

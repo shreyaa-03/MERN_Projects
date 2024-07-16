@@ -5,7 +5,7 @@ export default function OTPVerification({
   label1,
   label2,
   handleOnClick,
-  otpRefs,
+  otpRefs, handleResend
 }) {
   return (
     // <div className="min-h-screen flex items-center justify-center bg-white">
@@ -39,7 +39,7 @@ export default function OTPVerification({
           Didn't receive code?{" "}
           <a
             className="font-medium text-indigo-500 hover:text-indigo-600"
-            href="#0"
+            onClick={handleResend}
           >
             Resend
           </a>

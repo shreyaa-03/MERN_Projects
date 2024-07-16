@@ -1,9 +1,12 @@
+/* eslint-disable no-unused-vars */
 import OTPVerification from "../Shared/OTPVerification";
 import { useLocation } from "react-router-dom";
 import FailureAlert from "../Shared/FailureAlert";
 import SuccessAlert from "../Shared/SuccessAlert";
 import { useState, useRef } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { resendVerification } from "../../../store/Slices/resendVerificationSlice";
 
 function maskEmail(email) {
   const [localPart, domain] = email.split("@");
@@ -16,6 +19,7 @@ export default function EmailOTPVerify() {
   const location = useLocation();
   const email = location.state?.email;
   const maskedEmail = email ? maskEmail(email) : "";
+  const dispatch = useDispatch();
 
   const [alert, setAlert] = useState("");
 
@@ -60,6 +64,24 @@ export default function EmailOTPVerify() {
     }
   };
 
+  const handleResend = async () => {
+    try {
+      const response = await dispatch(
+        resendVerification({
+          url: "http://localhost:3000/user/resend/email/otp",
+          userData: { email },
+        })
+      ).unwrap();
+      setAlert({ type: "success", email, message: "Email otp sent successfull!" });
+    } catch (error) {
+      console.error("Error:", error);
+      setAlert({
+        type: "failure",
+        message:   error || "Failed to resend otp ",
+      });
+    }
+  };
+
   return (
     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
       <OTPVerification
@@ -67,18 +89,13 @@ export default function EmailOTPVerify() {
         label2={`Enter the 4-digit verification code that was sent to your email ${maskedEmail}`}
         handleOnClick={handleOnClick}
         otpRefs={otpRefs}
+        handleResend={handleResend}
       />
       <div className="mt-10">
         {alert.type === "success" ? (
-          <SuccessAlert
-            label1={"Verification successful"}
-            label2={"Your email has been verified."}
-          />
+          <SuccessAlert label1={"Successful"} label2={alert.message} />
         ) : alert.type === "failure" ? (
-          <FailureAlert
-            label1={"Verification Failed!"}
-            label2={alert.message}
-          />
+          <FailureAlert label1={"Failed!"} label2={alert.message} />
         ) : null}
       </div>
     </div>
